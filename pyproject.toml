@@ -196,6 +196,9 @@ variance-mismatch = "error"
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/*/__init__.pyi"
 errors = { deprecated = "ignore" }
+# python 3.12-numpy 2.0 don't raise the issue so ignoring them for this combo
+matches = "tests/optimize/test_minimize_scalar.pyi"
+errors = { unused-ignore = "ignore" }
 
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/odr/*.pyi"
