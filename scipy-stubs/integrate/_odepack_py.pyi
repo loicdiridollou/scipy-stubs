@@ -137,12 +137,12 @@ def odeint(
     tfirst: Literal[True, 1],
 ) -> tuple[onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # args=<given>, full_output=False (default), tfirst=False (default)
-def odeint(
-    func: _FuncYT[*_Ts, onp.ToFloat1D | float],
+def odeint[*Ts](
+    func: _FuncYT[*Ts, onp.ToFloat1D | float],
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
-    args: tuple[*_Ts],
-    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,
+    args: tuple[*Ts],
+    Dfun: _FuncYT[*Ts, onp.ToFloat2D] | None = None,
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -162,12 +162,12 @@ def odeint(
     tfirst: Literal[False, 0] = False,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=<given>, full_output=False (default), *, tfirst=True
-def odeint(
-    func: _FuncTY[*_Ts, onp.ToFloat1D | float],
+def odeint[*Ts](
+    func: _FuncTY[*Ts, onp.ToFloat1D | float],
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
-    args: tuple[*_Ts],
-    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,
+    args: tuple[*Ts],
+    Dfun: _FuncTY[*Ts, onp.ToFloat2D] | None = None,
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -188,12 +188,12 @@ def odeint(
     tfirst: Literal[True, 1],
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=<given>, *, full_output=True, tfirst=False (default)
-def odeint(
-    func: _FuncYT[*_Ts, onp.ToFloat1D | float],
+def odeint[*Ts](
+    func: _FuncYT[*Ts, onp.ToFloat1D | float],
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
-    args: tuple[*_Ts],
-    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,
+    args: tuple[*Ts],
+    Dfun: _FuncYT[*Ts, onp.ToFloat2D] | None = None,
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],
@@ -214,12 +214,12 @@ def odeint(
     tfirst: Literal[False, 0] = False,
 ) -> tuple[onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # args=<given>, *, full_output=True, tfirst=True
-def odeint(
-    func: _FuncTY[*_Ts, onp.ToFloat1D | float],
+def odeint[*Ts](
+    func: _FuncTY[*Ts, onp.ToFloat1D | float],
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
-    args: tuple[*_Ts],
-    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,
+    args: tuple[*Ts],
+    Dfun: _FuncTY[*Ts, onp.ToFloat2D] | None = None,
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],

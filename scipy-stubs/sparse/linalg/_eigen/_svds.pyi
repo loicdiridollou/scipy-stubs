@@ -18,13 +18,13 @@ _Solver: TypeAlias = Literal["arpack", "propack", "lobpcg"]
 
 ###
 
-def svds(
-    A: _ToMatrix[_SCT],
+def svds[SCT: np.float32 | np.float64 | np.complex64 | np.complex128](
+    A: _ToMatrix[SCT],
     k: int = 6,
     ncv: int | None = None,
     tol: float = 0,
     which: _Which = "LM",
-    v0: onp.ArrayND[_SCT] | None = None,
+    v0: onp.ArrayND[SCT] | None = None,
     maxiter: int | None = None,
     return_singular_vectors: _ReturnSingularVectors = True,
     solver: _Solver = "arpack",
@@ -32,4 +32,4 @@ def svds(
     options: Mapping[str, object] | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array2D[_SCT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[_SCT]]: ...
+) -> tuple[onp.Array2D[SCT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[SCT]]: ...

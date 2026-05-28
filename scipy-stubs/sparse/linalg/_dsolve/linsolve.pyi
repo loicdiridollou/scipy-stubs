@@ -25,7 +25,6 @@ __all__ = [
     "use_solver",
 ]
 
-_SparseT = TypeVar("_SparseT", bound=_spbase)
 _NumberT_contra = TypeVar("_NumberT_contra", bound=npc.number, contravariant=True)
 _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.complex64 | np.complex128, covariant=True)
 
@@ -74,7 +73,9 @@ def factorized(A: _ToC64Mat) -> _SuperLU_solve[_AsC64, np.complex64]: ...
 
 #
 @overload  # 2d float, sparse 2d
-def spsolve(A: _ToInexactMat, b: _SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True) -> _SparseT: ...
+def spsolve[SparseT: _spbase](
+    A: _ToInexactMat, b: SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> SparseT: ...
 @overload  # 2d float, 1d float
 def spsolve(
     A: _ToFloatMat, b: onp.ToFloatStrict1D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True

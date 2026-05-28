@@ -10,9 +10,7 @@ from ._typing import Constraints, MinimizerKwargs
 
 __all__ = ["shgo"]
 
-_VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
-
 _Float: TypeAlias = float | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
@@ -50,7 +48,7 @@ class OptimizeResult(_OptimizeResult):
     nlhev: int  # undocumented
     nit: int
 
-def shgo(
+def shgo[VT, RT](
     func: _Fun1D[onp.ToFloat],
     bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds,
     args: tuple[object, ...] = (),
@@ -62,5 +60,5 @@ def shgo(
     options: _SHGOOptions | None = None,
     sampling_method: Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"] = "simplicial",
     *,
-    workers: onp.ToJustInt | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: onp.ToJustInt | Callable[[Callable[[VT], RT], Iterable[VT]], Sequence[RT]] = 1,
 ) -> OptimizeResult: ...

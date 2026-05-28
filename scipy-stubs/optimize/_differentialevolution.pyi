@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable
-from typing import Concatenate, Literal, TypeAlias, TypeVar
+from typing import Concatenate, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
@@ -27,9 +27,6 @@ _StrategyName: TypeAlias = Literal[
     "currenttobest1exp",
 ]
 
-_S = TypeVar("_S")
-_T = TypeVar("_T")
-
 ###
 
 class OptimizeResult(_OptimizeResult):
@@ -44,7 +41,7 @@ class OptimizeResult(_OptimizeResult):
     nit: int
     nfev: int
 
-def differential_evolution(
+def differential_evolution[S, T](
     func: Callable[Concatenate[_Float1D, ...], onp.ToFloat],
     bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds,
     args: tuple[object, ...] = (),
@@ -61,7 +58,7 @@ def differential_evolution(
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
     atol: onp.ToFloat = 0,
     updating: Literal["immediate", "deferred"] = "immediate",
-    workers: onp.ToJustInt | Callable[[Callable[[_S], _T], Iterable[_S]], Iterable[_T]] = 1,
+    workers: onp.ToJustInt | Callable[[Callable[[S], T], Iterable[S]], Iterable[T]] = 1,
     constraints: NonlinearConstraint | LinearConstraint | Bounds | tuple[()] = (),
     x0: onp.ToArray1D | None = None,
     *,

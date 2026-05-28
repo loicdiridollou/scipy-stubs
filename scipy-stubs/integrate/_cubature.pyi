@@ -9,8 +9,6 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 
-_VT = TypeVar("_VT")
-_RT = TypeVar("_RT")
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _ArrayAPINamespace: TypeAlias = ModuleType
@@ -39,7 +37,7 @@ class CubatureResult(Generic[_ShapeT_co]):
     atol: float
     rtol: float
 
-def cubature(
+def cubature[VT, RT](
     f: Callable[Concatenate[onp.Array2D[np.float64], ...], onp.ToFloatND],
     a: onp.ToFloat1D,
     b: onp.ToFloat1D,
@@ -49,6 +47,6 @@ def cubature(
     atol: float = 0,
     max_subdivisions: int = 10_000,
     args: tuple[object, ...] = (),
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | Callable[[Callable[[VT], RT], Iterable[VT]], Sequence[RT]] = 1,
     points: Sequence[onp.ToFloat1D] | None = None,
 ) -> CubatureResult: ...

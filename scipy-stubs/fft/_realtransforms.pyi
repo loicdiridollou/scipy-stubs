@@ -1,4 +1,4 @@
-from typing import Any, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, SupportsIndex, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,9 +8,6 @@ from ._typing import DCTType, NormalizationMode
 from scipy._typing import AnyShape
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
-
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating])
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 _WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
@@ -22,8 +19,8 @@ _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble, _Work
 # NOTE: These have (almost) identical signatures, so be sure to keep them in sync.
 
 @overload
-def dctn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def dctn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -32,10 +29,10 @@ def dctn(
     workers: int | None = None,
     *,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def dctn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def dctn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -44,10 +41,10 @@ def dctn(
     workers: int | None = None,
     *,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def dctn(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def dctn[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -56,7 +53,7 @@ def dctn(
     workers: int | None = None,
     *,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def dctn(
     x: onp.SequenceND[float],
@@ -96,8 +93,8 @@ def dctn(
 
 #
 @overload
-def idctn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def idctn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -105,10 +102,10 @@ def idctn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def idctn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def idctn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -116,10 +113,10 @@ def idctn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def idctn(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def idctn[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -127,7 +124,7 @@ def idctn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def idctn(
     x: onp.SequenceND[float],
@@ -164,8 +161,8 @@ def idctn(
 
 #
 @overload
-def dstn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def dstn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -173,10 +170,10 @@ def dstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def dstn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def dstn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -184,10 +181,10 @@ def dstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def dstn(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def dstn[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -195,7 +192,7 @@ def dstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def dstn(
     x: onp.SequenceND[float],
@@ -232,8 +229,8 @@ def dstn(
 
 #
 @overload
-def idstn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def idstn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -241,10 +238,10 @@ def idstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def idstn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def idstn[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -252,10 +249,10 @@ def idstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def idstn(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def idstn[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -263,7 +260,7 @@ def idstn(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def idstn(
     x: onp.SequenceND[float],
@@ -300,8 +297,8 @@ def idstn(
 
 #
 @overload
-def dct(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def dct[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -309,10 +306,10 @@ def dct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def dct(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def dct[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -320,10 +317,10 @@ def dct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def dct(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def dct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -331,7 +328,7 @@ def dct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def dct(
     x: onp.SequenceND[float],
@@ -368,8 +365,8 @@ def dct(
 
 #
 @overload
-def idct(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def idct[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -377,10 +374,10 @@ def idct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def idct(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def idct[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -388,10 +385,10 @@ def idct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def idct(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def idct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -399,7 +396,7 @@ def idct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def idct(
     x: onp.SequenceND[float],
@@ -436,8 +433,8 @@ def idct(
 
 #
 @overload
-def dst(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def dst[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -445,10 +442,10 @@ def dst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def dst(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def dst[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -456,10 +453,10 @@ def dst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def dst(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def dst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -467,7 +464,7 @@ def dst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def dst(
     x: onp.SequenceND[float],
@@ -504,8 +501,8 @@ def dst(
 
 #
 @overload
-def idst(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+def idst[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -513,10 +510,10 @@ def idst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def idst(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+def idst[ShapeT: tuple[int, ...]](
+    x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -524,10 +521,10 @@ def idst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> onp.Array[_ShapeT, np.float32]: ...
+) -> onp.Array[ShapeT, np.float32]: ...
 @overload
-def idst(
-    x: onp.CanArray[_ShapeT, _DTypeT],
+def idst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
+    x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
     n: int | None = None,
     axis: SupportsIndex = -1,
@@ -535,7 +532,7 @@ def idst(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def idst(
     x: onp.SequenceND[float],

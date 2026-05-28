@@ -9,7 +9,6 @@ from ._typing import NanPolicy
 
 __all__ = ["differential_entropy", "entropy"]
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _PyScalarT = TypeVar("_PyScalarT")
 
@@ -323,8 +322,8 @@ def entropy(
 
 #
 @overload  # Nd known inexact dtype, axis=None
-def differential_entropy(
-    values: _ToArrayMaxND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: _ToArrayMaxND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -332,10 +331,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 0d or 1d known inexact dtype
-def differential_entropy(
-    values: _ToArrayMax1D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: _ToArrayMax1D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -343,10 +342,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 2d known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayStrict2D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -354,10 +353,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayStrict3D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayStrict3D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -365,10 +364,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> onp.Array2D[_InexactT]: ...
+) -> onp.Array2D[InexactT]: ...
 @overload  # Nd known inexact dtype, keepdims=True
-def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -376,10 +375,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 @overload  # Nd known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -387,7 +386,7 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd float64 | +integer, axis=None
 def differential_entropy(
     values: _ToArrayMaxND[_AsF64, float],

@@ -287,7 +287,6 @@ ignore = [
   # TODO(@jorenham): https://github.com/scipy/scipy-stubs/pull/1615
   "UP040",
   "UP046",
-  "UP047",
 ]
 
 [tool.ruff.lint.per-file-ignores]

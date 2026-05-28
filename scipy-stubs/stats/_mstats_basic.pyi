@@ -89,8 +89,6 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.float64)
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating, default=np.float64)
 _SCT_bifc = TypeVar("_SCT_bifc", bound=npc.number | np.bool, default=np.float64)
-_SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=npc.number | np.timedelta64 | np.bool | np.object_)
-
 _MArrayOrND: TypeAlias = _SCT | onp.MArray[_SCT]
 
 _NDT_f_co = TypeVar("_NDT_f_co", covariant=True, bound=float | _MArrayOrND[npc.floating], default=onp.MArray[np.float64])
@@ -182,7 +180,9 @@ def mode(a: onp.ToFloatND, axis: SupportsIndex | None = 0) -> ModeResult: ...
 
 #
 @overload
-def msign(x: _ArrayLike[_SCT_bifcmO]) -> onp.ArrayND[_SCT_bifcmO]: ...
+def msign[SCT_bifcmO: npc.number | np.timedelta64 | np.bool | np.object_](
+    x: _ArrayLike[SCT_bifcmO],
+) -> onp.ArrayND[SCT_bifcmO]: ...
 @overload
 def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bool | np.object_]: ...
 

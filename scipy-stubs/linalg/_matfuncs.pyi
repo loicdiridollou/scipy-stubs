@@ -26,9 +26,6 @@ __all__ = [
 ]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ComplexT = TypeVar("_ComplexT", bound=npc.complexfloating)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 _FuncND: TypeAlias = Callable[[onp.Array[Any, _InexactT]], onp.ToComplexND]  # return type is unsafely cast to the input type
 
 _ToPosInt: TypeAlias = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
@@ -48,17 +45,17 @@ eps: Final[np.float64] = ...  # undocumented
 feps: Final[np.float32] = ...  # undocumented
 _array_precision: Final[dict[Literal["i", "l", "f", "d", "F", "D"], Literal[0, 1]]] = ...  # undocumented
 
-def _asarray_square(A: onp.ToArray2D[_InexactT]) -> onp.Array2D[_InexactT]: ...  # undocumented
+def _asarray_square[InexactT: npc.inexact](A: onp.ToArray2D[InexactT]) -> onp.Array2D[InexactT]: ...  # undocumented
 
 #
 @overload
-def _maybe_real(
-    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact64, _ShapeT], tol: float | None = None
-) -> onp.ArrayND[np.float64, _ShapeT]: ...  # undocumented
+def _maybe_real[ShapeT: tuple[int, ...]](
+    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact64, ShapeT], tol: float | None = None
+) -> onp.ArrayND[np.float64, ShapeT]: ...  # undocumented
 @overload
-def _maybe_real(
-    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact32, _ShapeT], tol: float | None = None
-) -> onp.ArrayND[np.float32, _ShapeT]: ...  # undocumented
+def _maybe_real[ShapeT: tuple[int, ...]](
+    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact32, ShapeT], tol: float | None = None
+) -> onp.ArrayND[np.float32, ShapeT]: ...  # undocumented
 
 #
 @overload  # +integer, +unsignedinteger
@@ -113,7 +110,9 @@ def expm(A: onp.ToJustComplexND) -> _ComplexND: ...
 def expm(A: onp.ToComplexND) -> _InexactND: ...
 
 #
-def _exp_sinch(x: onp.ArrayND[_ComplexT, _ShapeT]) -> onp.ArrayND[_ComplexT, _ShapeT]: ...  # undocumented
+def _exp_sinch[ComplexT: npc.complexfloating, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[ComplexT, ShapeT],
+) -> onp.ArrayND[ComplexT, ShapeT]: ...  # undocumented
 
 #
 @overload  # +integer | ~float64
@@ -197,9 +196,13 @@ def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: onp.ToT
 @overload  # +complexfloating, disp: False
 def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: onp.ToFalse) -> tuple[_Complex128ND, float]: ...
 @overload  # T: inexact, disp: True = ...
-def funm(A: onp.CanArrayND[_InexactT], func: _FuncND[_InexactT], disp: onp.ToTrue = True) -> onp.ArrayND[_InexactT]: ...
+def funm[InexactT: npc.inexact](
+    A: onp.CanArrayND[InexactT], func: _FuncND[InexactT], disp: onp.ToTrue = True
+) -> onp.ArrayND[InexactT]: ...
 @overload  # T: inexact, disp: False
-def funm(A: onp.CanArrayND[_InexactT], func: _FuncND[_InexactT], disp: onp.ToFalse) -> tuple[onp.ArrayND[_InexactT], float]: ...
+def funm[InexactT: npc.inexact](
+    A: onp.CanArrayND[InexactT], func: _FuncND[InexactT], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[InexactT], float]: ...
 
 #
 @overload  # +float64

@@ -29,8 +29,8 @@ __all__ = [
     "watershed_ift",
 ]
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
 _ISCT = TypeVar("_ISCT", bound=npc.inexact)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
 
 __Func1: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
 __Func2: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], onp.ToComplex]
@@ -69,15 +69,15 @@ def value_indices(
 
 #
 @overload
-def labeled_comprehension(
+def labeled_comprehension[SCT: npc.number | np.bool](
     input: onp.ToComplex | onp.ToComplexND,
     labels: onp.ToComplex | onp.ToComplexND | None,
     index: onp.ToInt | onp.ToIntND | None,
     func: _ComprehensionFunc,
-    out_dtype: _DTypeLike[_SCT],
+    out_dtype: _DTypeLike[SCT],
     default: onp.ToFloat,
     pass_positions: bool = False,
-) -> onp.ArrayND[_SCT]: ...
+) -> onp.ArrayND[SCT]: ...
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
@@ -181,17 +181,17 @@ median: _DefStatistic
 @type_check_only
 class _DefExtreme(Protocol):
     @overload
-    def __call__(
-        self, /, input: onp.CanArrayND[_SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> _SCT: ...
+    def __call__[SCT: npc.number | np.bool](
+        self, /, input: onp.CanArrayND[SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+    ) -> SCT: ...
     @overload
-    def __call__(
-        self, /, input: onp.CanArrayND[_SCT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
-    ) -> onp.ArrayND[_SCT]: ...
+    def __call__[SCT: npc.number | np.bool](
+        self, /, input: onp.CanArrayND[SCT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+    ) -> onp.ArrayND[SCT]: ...
     @overload
-    def __call__(
-        self, /, input: onp.CanArrayND[_SCT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
-    ) -> onp.ArrayND[_SCT]: ...
+    def __call__[SCT: npc.number | np.bool](
+        self, /, input: onp.CanArrayND[SCT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
+    ) -> onp.ArrayND[SCT]: ...
     @overload
     def __call__(
         self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
@@ -206,13 +206,13 @@ class _DefExtreme(Protocol):
         index: onp.ArrayND[npc.integer],
     ) -> onp.ArrayND[Any]: ...
     @overload
-    def __call__(
+    def __call__[SCT: npc.number | np.bool](
         self,
         /,
-        input: onp.CanArrayND[_SCT],
+        input: onp.CanArrayND[SCT],
         labels: onp.ToInt | onp.ToIntND | None = None,
         index: onp.ToInt | onp.ToIntND | None = None,
-    ) -> _SCT | onp.ArrayND[_SCT]: ...
+    ) -> SCT | onp.ArrayND[SCT]: ...
     @overload
     def __call__(
         self,
@@ -237,9 +237,9 @@ def extrema(
     index: onp.ToInt | None = None,
 ) -> _Extrema0D[np.complex128]: ...
 @overload
-def extrema(
-    input: _ArrayLike[_SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
-) -> _Extrema0D[_SCT]: ...
+def extrema[SCT: npc.number | np.bool](
+    input: _ArrayLike[SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> _Extrema0D[SCT]: ...
 @overload
 def extrema(
     input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
@@ -261,11 +261,13 @@ def extrema(
     input: onp.ToJustComplex128 | onp.ToJustComplex128_ND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
 ) -> _ExtremaND[np.complex128]: ...
 @overload
-def extrema(input: _ArrayLike[_SCT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> _ExtremaND[_SCT]: ...
+def extrema[SCT: npc.number | np.bool](
+    input: _ArrayLike[SCT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> _ExtremaND[SCT]: ...
 @overload
-def extrema(
-    input: _ArrayLike[_SCT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
-) -> _ExtremaND[_SCT]: ...
+def extrema[SCT: npc.number | np.bool](
+    input: _ArrayLike[SCT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
+) -> _ExtremaND[SCT]: ...
 @overload
 def extrema(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> _ExtremaND[Any]: ...
 @overload
@@ -273,9 +275,9 @@ def extrema(
     input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
 ) -> _ExtremaND[Any]: ...
 @overload
-def extrema(
-    input: _ArrayLike[_SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | onp.ToIntND | None = None
-) -> _Extrema0D[_SCT] | _ExtremaND[_SCT]: ...
+def extrema[SCT: npc.number | np.bool](
+    input: _ArrayLike[SCT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | onp.ToIntND | None = None
+) -> _Extrema0D[SCT] | _ExtremaND[SCT]: ...
 @overload
 def extrema(
     input: onp.ToComplex | onp.ToComplexND,

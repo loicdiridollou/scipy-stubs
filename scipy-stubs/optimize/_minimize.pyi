@@ -16,8 +16,6 @@ __all__ = ["minimize", "minimize_scalar"]
 ###
 
 _T = TypeVar("_T")
-_Float1DT = TypeVar("_Float1DT", bound=_Float1D)
-
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Args: TypeAlias = tuple[object, ...]
@@ -38,7 +36,6 @@ _ToBracket: TypeAlias = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
 _ToBound: TypeAlias = _Tuple2[onp.ToFloat]
 _Ignored: TypeAlias = object
 
-_MinimizeScalarResultT = TypeVar("_MinimizeScalarResultT", bound=_MinimizeScalarResultBase)
 _MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
 
 @type_check_only
@@ -185,8 +182,8 @@ class OptimizeResult(_OptimizeResult):
     nhev: int  # requires `hess` or `hessp`
 
 @overload  # identity function with and one parameter, `jac` not truthy
-def minimize(
-    fun: Callable[Concatenate[_Float1DT, ...], _Float1DT],
+def minimize[Float1DT: _Float1D](
+    fun: Callable[Concatenate[Float1DT, ...], Float1DT],
     x0: onp.ToFloat,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
@@ -279,26 +276,26 @@ def minimize_scalar(
     options: _MinimizeScalarOptionsBounded | None = None,
 ) -> _MinimizeScalarResult: ...
 @overload  # method=<custom>  (positional)
-def minimize_scalar(
+def minimize_scalar[MinimizeScalarResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
     bracket: _ToBracket | None,
     bounds: _ToBound | None,
     args: _Args,
-    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
+    method: _MinimizeScalarMethodFun[MinimizeScalarResultT],
     tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,
-) -> _MinimizeScalarResultT: ...
+) -> MinimizeScalarResultT: ...
 @overload  # method=<custom>  (keyword)
-def minimize_scalar(
+def minimize_scalar[MinimizeScalarResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
     bracket: _ToBracket | None = None,
     bounds: _ToBound | None = None,
     args: _Args = (),
     *,
-    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
+    method: _MinimizeScalarMethodFun[MinimizeScalarResultT],
     tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,
-) -> _MinimizeScalarResultT: ...
+) -> MinimizeScalarResultT: ...
 
 # undocumented
 def standardize_bounds(bounds: Bounds, x0: onp.ToFloat1D, meth: MethodMimimize) -> Bounds | list[Bound]: ...

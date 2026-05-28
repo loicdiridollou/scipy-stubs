@@ -38,7 +38,6 @@ __all__ = [
     "vectorized_filter",
 ]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.bool | npc.number])
 _ScalarT = TypeVar("_ScalarT", bound=np.bool | npc.number, default=Any)
 
@@ -97,15 +96,15 @@ def vectorized_filter(
 
 # keep roughly in sync with sobel
 @overload
-def correlate1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def correlate1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     weights: onp.ToFloat1D,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def correlate1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -159,16 +158,16 @@ def correlate1d(
 
 # keep in sync with correlate1d
 @overload
-def correlate(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def correlate[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     weights: onp.ToFloatND,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
     *,
-    axes: _ShapeT | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+    axes: ShapeT | None = None,
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def correlate(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -227,15 +226,15 @@ def correlate(
 
 # keep in sync with correlate1d
 @overload
-def convolve1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def convolve1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     weights: onp.ToFloat1D,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def convolve1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -289,16 +288,16 @@ def convolve1d(
 
 # keep in sync with correlate
 @overload
-def convolve(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def convolve[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     weights: onp.ToFloatND,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
     *,
-    axes: _ShapeT | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+    axes: ShapeT | None = None,
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def convolve(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -357,13 +356,13 @@ def convolve(
 
 # keep in sync with sobel
 @overload
-def prewitt(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def prewitt[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def prewitt(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -407,13 +406,13 @@ def prewitt(
 
 # keep in sync with prewitt
 @overload
-def sobel(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def sobel[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def sobel(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -457,14 +456,14 @@ def sobel(
 
 #
 @overload
-def laplace(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+def laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: _ShapeT | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+    axes: ShapeT | None = None,
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def laplace(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -513,16 +512,16 @@ def laplace(
 
 # keep in sync with laplace
 @overload
-def gaussian_laplace(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def gaussian_laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: _ShapeT | None = None,
+    axes: ShapeT | None = None,
     **kwargs: Unpack[_GaussianKwargs],
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def gaussian_laplace(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -581,17 +580,17 @@ def gaussian_laplace(
 
 # keep in sync with laplace
 @overload
-def generic_laplace(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
-    derivative2: _Derivative[_DTypeT, Any],
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+def generic_laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
+    derivative2: _Derivative[DTypeT, Any],
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
     *,
-    axes: _ShapeT | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+    axes: ShapeT | None = None,
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_laplace(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -655,16 +654,16 @@ def generic_laplace(
 
 # keep in sync with gaussian_laplace
 @overload
-def gaussian_gradient_magnitude(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def gaussian_gradient_magnitude[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: _ShapeT | None = None,
+    axes: ShapeT | None = None,
     **kwargs: Unpack[_GaussianKwargs],
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def gaussian_gradient_magnitude(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -723,17 +722,17 @@ def gaussian_gradient_magnitude(
 
 #
 @overload
-def generic_gradient_magnitude(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
-    derivative: _Derivative[_DTypeT, Any],
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+def generic_gradient_magnitude[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
+    derivative: _Derivative[DTypeT, Any],
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
     *,
-    axes: _ShapeT | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+    axes: ShapeT | None = None,
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_gradient_magnitude(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -797,18 +796,18 @@ def generic_gradient_magnitude(
 
 #
 @overload
-def gaussian_filter1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def gaussian_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     sigma: onp.ToFloat,
     axis: int = -1,
     order: int = 0,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     truncate: float = 4.0,
     *,
     radius: int | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def gaussian_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -877,18 +876,18 @@ def gaussian_filter1d(
 
 # keep in sync with generic_laplace
 @overload
-def gaussian_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def gaussian_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
     order: _Ints = 0,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     truncate: float = 4.0,
     *,
     radius: _Ints | None = None,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def gaussian_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -957,18 +956,18 @@ def gaussian_filter(
 
 #
 @overload
-def generic_filter1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def generic_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     function: _FilterFunc1D | LowLevelCallable,
     filter_size: float,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToFloat = 0.0,
     origin: int = 0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1024,12 +1023,12 @@ def generic_filter1d(
 
 # keep in sync with generic_filter1d
 @overload
-def generic_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def generic_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     function: _FilterFuncND | LowLevelCallable,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToFloat = 0.0,
     origin: _Ints = 0,
@@ -1037,7 +1036,7 @@ def generic_filter(
     extra_keywords: dict[str, Any] | None = None,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1101,15 +1100,15 @@ def generic_filter(
 
 #
 @overload
-def uniform_filter1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def uniform_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: int,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def uniform_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1163,16 +1162,16 @@ def uniform_filter1d(
 
 # keep roughly in sync with uniform_filter1d
 @overload
-def uniform_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def uniform_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: _Ints = 3,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def uniform_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1231,15 +1230,15 @@ def uniform_filter(
 
 # keep in sync with uniform_filter1d
 @overload
-def minimum_filter1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def minimum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: int,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def minimum_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1293,17 +1292,17 @@ def minimum_filter1d(
 
 # keep in sync with uniform_filter (plus `footprint`)
 @overload
-def minimum_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def minimum_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def minimum_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1367,15 +1366,15 @@ def minimum_filter(
 
 # keep in sync with uniform_filter1d
 @overload
-def maximum_filter1d(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def maximum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: int,
     axis: int = -1,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def maximum_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1429,17 +1428,17 @@ def maximum_filter1d(
 
 # keep in sync with minimum_filter
 @overload
-def maximum_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def maximum_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def maximum_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1503,17 +1502,17 @@ def maximum_filter(
 
 # keep in sync with maximum_filter
 @overload
-def median_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def median_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def median_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1577,18 +1576,18 @@ def median_filter(
 
 # keep in sync with median_filter (plus `rank`)
 @overload
-def rank_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def rank_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     rank: int,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def rank_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
@@ -1657,18 +1656,18 @@ def rank_filter(
 
 # keep in sync with median_filter (plus `percentile` and minus `rank`)
 @overload
-def percentile_filter(
-    input: nptc.CanArray[_ShapeT, _DTypeT],
+def percentile_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
+    input: nptc.CanArray[ShapeT, DTypeT],
     percentile: onp.ToFloat,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
+    output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> np.ndarray[_ShapeT, _DTypeT]: ...
+) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def percentile_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],

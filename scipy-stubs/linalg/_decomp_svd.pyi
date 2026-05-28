@@ -7,8 +7,6 @@ import optype.numpy.compat as npc
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
 
-_RealT = TypeVar("_RealT", bound=np.bool | npc.integer | npc.floating)
-_InexactT = TypeVar("_InexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _ScalarT1 = TypeVar("_ScalarT1", bound=np.generic)
 
@@ -93,7 +91,9 @@ def svdvals(a: onp.ToComplexND, overwrite_a: bool = False, check_finite: bool = 
 
 #
 @overload
-def diagsvd(s: onp.ToArrayND[_RealT, _RealT], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[_RealT]: ...
+def diagsvd[RealT: np.bool | npc.integer | npc.floating](
+    s: onp.ToArrayND[RealT, RealT], M: SupportsIndex, N: SupportsIndex
+) -> onp.ArrayND[RealT]: ...
 @overload
 def diagsvd(s: onp.SequenceND[bool], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[np.bool]: ...
 @overload
@@ -109,7 +109,9 @@ def orth(
 @overload
 def orth(A: onp.ToJustComplex128_ND, rcond: float | None = None) -> onp.ArrayND[np.complex128]: ...
 @overload
-def orth(A: onp.ToArrayND[_InexactT, _InexactT], rcond: float | None = None) -> onp.ArrayND[_InexactT]: ...
+def orth[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128](
+    A: onp.ToArrayND[InexactT, InexactT], rcond: float | None = None
+) -> onp.ArrayND[InexactT]: ...
 
 #
 @overload
@@ -131,14 +133,14 @@ def null_space(
     lapack_driver: _LapackDriver = "gesdd",
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
-def null_space(
-    A: onp.ToArrayND[_InexactT, _InexactT],
+def null_space[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128](
+    A: onp.ToArrayND[InexactT, InexactT],
     rcond: float | None = None,
     *,
     overwrite_a: bool = False,
     check_finite: bool = True,
     lapack_driver: _LapackDriver = "gesdd",
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 
 #
 @overload

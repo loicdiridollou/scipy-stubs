@@ -25,7 +25,9 @@ class _FakeMatrix2(Generic[_ScalarT, _ShapeT]):  # undocumented
     @property
     def shape(self) -> _ShapeT: ...
 
-def _get_array(shape: _ShapeT, dtype: type[_ScalarT]) -> onp.ArrayND[_ScalarT, _ShapeT]: ...  # undocumented
+def _get_array[ShapeT: tuple[int, ...], ScalarT: np.generic](
+    shape: ShapeT, dtype: type[ScalarT]
+) -> onp.ArrayND[ScalarT, ShapeT]: ...  # undocumented
 def _id[T](x: T) -> T: ...  # undocumented
 
 #

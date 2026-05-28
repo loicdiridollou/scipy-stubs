@@ -1,12 +1,10 @@
-from typing import Final, Literal, TypeAlias, TypeVar
+from typing import Final, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
-
-_T = TypeVar("_T")
 
 _Int1D: TypeAlias = onp.Array1D[np.int_]
 
@@ -91,4 +89,4 @@ def check_termination(
 ) -> Literal[2, 3, 4] | None: ...
 
 #
-def scale_for_robust_loss_function(J: _ToMatrix, f: _T, rho: onp.ToFloat1D) -> tuple[_ToMatrix, _T]: ...
+def scale_for_robust_loss_function[T](J: _ToMatrix, f: T, rho: onp.ToFloat1D) -> tuple[_ToMatrix, T]: ...

@@ -38,9 +38,6 @@ __all__ = [
 _XT = TypeVar("_XT")
 _PT = TypeVar("_PT")
 _YT = TypeVar("_YT", default=onp.ToFloat)
-_VT = TypeVar("_VT")
-_RT = TypeVar("_RT")
-
 _Fn1: TypeAlias = Callable[Concatenate[_XT, ...], _YT]
 _Fn1_0d: TypeAlias = _Fn1[float, _YT] | _Fn1[np.float64, _YT]
 _Fn1_1d: TypeAlias = _Fn1[_Float1D, _YT]
@@ -544,7 +541,7 @@ def fminbound(
 
 #
 @overload  # full_output: False = ...
-def brute(
+def brute[VT, RT](
     func: _Fn1_1d,
     ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
     args: _Args = (),
@@ -552,10 +549,10 @@ def brute(
     full_output: onp.ToFalse = 0,
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: bool = False,
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | Callable[[Callable[[VT], RT], Iterable[VT]], Sequence[RT]] = 1,
 ) -> _Float1D: ...
 @overload  # full_output: True (keyword)
-def brute(
+def brute[VT, RT](
     func: _Fn1_1d,
     ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
     args: _Args = (),
@@ -564,7 +561,7 @@ def brute(
     full_output: onp.ToTrue,
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: bool = False,
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | Callable[[Callable[[VT], RT], Iterable[VT]], Sequence[RT]] = 1,
 ) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[npc.floating]]: ...
 
 #
